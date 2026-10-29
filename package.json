@@ -1,0 +1,11 @@
+{
+  "name": "linkmedia-site",
+  "version": "3.0.0",
+  "private": true,
+  "description": "Conversor MP3/MP4 para mídia própria ou autorizada com prévia e progresso real",
+  "scripts": {
+    "start": "node server/server.js",
+    "test": "node --test tests/*.test.js && node --check public/app.js"
+  },
+  "engines": {"node": ">=20"}
+}

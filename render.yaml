@@ -1,0 +1,9 @@
+services:
+  - type: web
+    name: linkmedia
+    runtime: docker
+    plan: starter
+    healthCheckPath: /api/health
+    envVars:
+      - key: MAX_ACTIVE
+        value: 2

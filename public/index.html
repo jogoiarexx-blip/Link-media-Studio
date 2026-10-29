@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#0b1320">
+<meta name="description" content="LinkMedia: prévia automática, escolha de MP3 ou MP4, qualidade de saída e andamento real da conversão de conteúdo autorizado.">
+<title>LinkMedia Studio — Conversão simples, sem complicação</title>
+<link rel="icon" href="./favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+<div class="ambient ambient-one" aria-hidden="true"></div><div class="ambient ambient-two" aria-hidden="true"></div>
+<header class="header shell">
+  <a class="logo" href="./" aria-label="LinkMedia Studio — início"><span class="logo-box"><svg viewBox="0 0 28 28" fill="none" aria-hidden="true"><path d="M6 9.5 12 6v16l-6-3.5v-9Zm10-3.5 6 3.5v9L16 22V6Z" stroke="currentColor" stroke-width="2.5" stroke-linejoin="round"/><path d="m11 14 7-4v8l-7-4Z" fill="currentColor"/></svg></span><span>linkmedia<small>STUDIO</small></span></a>
+  <div class="nav-right"><span class="tag-version">V 3.0</span><span class="header-divider"></span><a href="#como-funciona" class="nav-link">Como funciona</a><a href="#configuracao" class="nav-link">Configurações</a></div>
+</header>
+<main class="shell">
+  <section class="workspace">
+    <div class="intro">
+      <div class="eyebrow"><span class="eyebrow-dot"></span> FERRAMENTA DE MÍDIA</div>
+      <h1>Seu vídeo.<br>Seu <span>formato.</span><br>Sem complicação.</h1>
+      <p class="intro-sub">Cole um link, confira a prévia e salve seu conteúdo em MP3 ou MP4. Tudo em uma única tela, com controle de qualidade e progresso em tempo real.</p>
+      <div class="feature-list">
+        <div class="feature"><span class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="4" width="18" height="16" rx="3"/><path d="m10 9 6 3-6 3V9Z"/></svg></span><div><strong>Prévia antes de baixar</strong><span>Título, canal, capa e duração.</span></div></div>
+        <div class="feature"><span class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M5 12h14M12 5l7 7-7 7"/><path d="M5 5v14"/></svg></span><div><strong>Processamento transparente</strong><span>Transferência, velocidade e tempo restante.</span></div></div>
+        <div class="feature"><span class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3 4 7v5c0 5 3.3 8 8 9 4.7-1 8-4 8-9V7l-8-4Z"/><path d="m9 12 2 2 4-4"/></svg></span><div><strong>Sem atalhos enganosos</strong><span>Sem anúncios falsos ou cadastro obrigatório.</span></div></div>
+      </div>
+      <div class="intro-foot"><span class="tiny-line"></span> CONTEÚDO PRÓPRIO OU AUTORIZADO</div>
+    </div>
+    <div class="converter" aria-label="Conversor de mídia">
+      <div class="panel-header"><div><span class="panel-overline">NOVA CONVERSÃO</span><h2>Preparar arquivo</h2></div><span class="panel-index">01 / 03</span></div>
+      <div class="form-area"><form id="converterForm" novalidate>
+        <div class="field-head"><label for="url">LINK DO VÍDEO</label><span id="linkIndicator" class="field-indicator">Aguardando link</span></div>
+        <div class="link-input"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M10 13a5 5 0 0 0 7.3.3l3-3a5 5 0 0 0-7.1-7.1l-1.7 1.7"/><path d="M14 11a5 5 0 0 0-7.3-.3l-3 3a5 5 0 1 0 7.1 7.1l1.7-1.7"/></svg><input type="url" id="url" placeholder="Cole a URL do vídeo do YouTube" autocomplete="url" spellcheck="false" aria-describedby="urlHelp"><button type="button" class="paste-btn" id="pasteBtn">Colar</button></div>
+        <p id="urlHelp" class="helper">A prévia aparece automaticamente após inserir um link válido.</p>
+        <div id="previewArea" class="preview-area" aria-live="polite" hidden>
+          <div id="previewLoading" class="preview-loading" hidden><div class="skeleton skeleton-art"></div><div class="skeleton-lines"><div class="skeleton sk-title"></div><div class="skeleton sk-small"></div><span>Consultando informações do vídeo...</span></div></div>
+          <div id="previewCard" class="preview-card" hidden><div class="thumbnail"><img id="previewImage" alt="Miniatura do vídeo" referrerpolicy="no-referrer"><span id="previewDuration" class="duration"></span></div><div class="preview-info"><span class="preview-eyebrow">PRÉVIA DO CONTEÚDO</span><strong id="previewTitle"></strong><span id="previewCreator"></span><span class="preview-verified"><span></span> Informações verificadas</span></div></div>
+          <div id="previewError" class="preview-error" hidden><span id="previewErrorText"></span><button type="button" id="retryPreview">Tentar novamente</button></div>
+        </div>
+        <div class="section-heading"><span>FORMATO DE SAÍDA</span><span class="step-count">02 / 03</span></div>
+        <div class="format-options" role="radiogroup" aria-label="Formato de saída">
+          <label class="format-card active" id="mp3Card"><input type="radio" name="format" value="mp3" checked><span class="file-icon audio-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg></span><span class="format-copy"><strong>MP3</strong><small>Somente áudio</small></span><span class="radio-indicator"></span></label>
+          <label class="format-card" id="mp4Card"><input type="radio" name="format" value="mp4"><span class="file-icon video-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2.5" y="4.5" width="19" height="15" rx="3"/><path d="m10 9 5 3-5 3V9Z"/></svg></span><span class="format-copy"><strong>MP4</strong><small>Vídeo + áudio</small></span><span class="radio-indicator"></span></label>
+        </div>
+        <div class="quality-field"><label for="quality"><strong>Qualidade</strong><span id="qualityHint">Qualidade do áudio de saída</span></label><div class="select-wrap"><select id="quality" aria-label="Qualidade do arquivo"><option value="best">Alta (VBR)</option><option value="192">192 kbps</option><option value="128">128 kbps</option></select><svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" fill="none"><path d="m6 9 6 6 6-6"/></svg></div></div>
+        <button class="convert-btn" type="submit" id="convertBtn" disabled><span id="convertLabel">Cole um link para continuar</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v13m0 0 5-5m-5 5-5-5M4 17v3h16v-3"/></svg></button>
+        <p class="permission-note">Use apenas vídeos próprios, de domínio público ou para os quais você tenha permissão de download.</p>
+      </form></div>
+      <div id="progressPanel" class="progress-panel" hidden aria-live="polite"><div class="progress-heading"><div><span>ANDAMENTO DO ARQUIVO</span><strong id="jobTitle">Preparando sua conversão</strong></div><span class="progress-status" id="stageLabel">Preparação</span></div>
+        <div class="stepper"><div class="step-node" id="stepPrepare"><span>1</span><small>Preparar</small></div><div class="step-line"></div><div class="step-node" id="stepDownload"><span>2</span><small>Baixar</small></div><div class="step-line"></div><div class="step-node" id="stepProcess"><span>3</span><small>Converter</small></div></div>
+        <div class="progress-row"><strong id="transferLabel">Transferência</strong><span id="transferPercent">—</span></div><div class="progress-track"><div id="transferBar" class="progress-fill"></div><div id="progressUnknown" class="progress-unknown" hidden></div></div>
+        <div class="stats"><div><small>TRANSFERIDO</small><strong id="statsBytes">—</strong></div><div><small>VELOCIDADE</small><strong id="statsSpeed">—</strong></div><div><small>TEMPO RESTANTE</small><strong id="statsEta">—</strong></div></div>
+        <div class="convert-stage" id="convertStage" hidden><span class="processing-dot"></span><span id="processingLabel">Processando o arquivo. Essa etapa pode levar alguns instantes.</span></div>
+        <div class="progress-actions"><button type="button" class="cancel-btn" id="cancelBtn">Cancelar conversão</button><a id="downloadBtn" class="download-btn" hidden>Baixar arquivo <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v13m0 0 5-5m-5 5-5-5M4 17v3h16v-3"/></svg></a></div>
+      </div>
+      <div id="messageBox" class="message" hidden role="alert"></div>
+    </div>
+  </section>
+  <section class="bottom-grid" id="como-funciona" aria-label="Como funciona"><div class="bottom-intro"><span>UM PROCESSO DIRETO</span><h2>Três etapas.<br>Um arquivo pronto.</h2></div><div class="mini-step"><span>01</span><h3>Cole o link</h3><p>Confira capa, título, autor e duração antes de iniciar.</p></div><div class="mini-step"><span>02</span><h3>Defina a qualidade</h3><p>Escolha MP3 para áudio ou MP4 para imagem e som.</p></div><div class="mini-step"><span>03</span><h3>Baixe com clareza</h3><p>Acompanhe a transferência e a conversão até concluir.</p></div></section>
+  <section id="configuracao" class="settings"><button type="button" id="toggleSettings" aria-expanded="false"><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l-1.7 1.7a1.7 1.7 0 0 0-1.9-.3l-1.1.5a1.7 1.7 0 0 0-1 1.6H10a1.7 1.7 0 0 0-1-1.6L7.9 18a1.7 1.7 0 0 0-1.9.3l-1.7-1.7a1.7 1.7 0 0 0 .3-1.9L4.1 14a1.7 1.7 0 0 0-1.6-1v-2a1.7 1.7 0 0 0 1.6-1l.5-1.1a1.7 1.7 0 0 0-.3-1.9L6 5.3a1.7 1.7 0 0 0 1.9.3L9 5.1a1.7 1.7 0 0 0 1-1.6h4a1.7 1.7 0 0 0 1 1.6l1.1.5a1.7 1.7 0 0 0 1.9-.3L19.7 7a1.7 1.7 0 0 0-.3 1.9l.5 1.1a1.7 1.7 0 0 0 1.6 1v2a1.7 1.7 0 0 0-1.6 1Z"/></svg> Configuração avançada do servidor</span><svg class="caret" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg></button><div id="settingsContent" hidden><p>Se publicar só a interface no GitHub Pages, configure aqui o endereço HTTPS do servidor Docker. No Render, Railway ou VPS, a interface e o conversor podem funcionar juntos.</p><div class="server-form"><label for="serverUrl">ENDEREÇO DA API</label><div><input type="url" id="serverUrl" placeholder="https://seu-linkmedia.onrender.com"><button id="saveServer" type="button">Salvar e testar</button></div><small id="serverStatus">Em branco: usar o mesmo servidor que hospeda esta página.</small></div></div></section>
+</main>
+<footer class="footer shell"><span>© 2026 LINKMEDIA STUDIO <span class="footer-divider">/</span> PROJETO INDEPENDENTE</span><span>Sem vínculo oficial com o YouTube. Respeite as permissões de uso dos conteúdos.</span></footer>
+<script src="./app.js" defer></script>
+</body>
+</html>
