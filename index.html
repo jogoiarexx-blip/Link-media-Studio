@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#090f1b">
+  <meta name="description" content="LinkMedia Studio: conversor MP3 e MP4 que funciona direto no navegador e pode ser publicado no GitHub Pages.">
+  <title>LinkMedia Studio — Conversão no navegador</title>
+  <link rel="icon" href="./favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+  <div class="glow glow-a" aria-hidden="true"></div><div class="glow glow-b" aria-hidden="true"></div>
+  <header class="topbar wrap">
+    <a href="./" class="brand" aria-label="LinkMedia — início"><span class="brand-mark"><svg viewBox="0 0 32 32" fill="none" aria-hidden="true"><rect x="3.5" y="4" width="25" height="24" rx="8" stroke="currentColor" stroke-width="2"/><path d="M12.5 10.5 22 16l-9.5 5.5v-11Z" fill="currentColor"/></svg></span><span class="brand-text">linkmedia <small>STUDIO</small></span></a>
+    <div class="topbar-right"><span class="live-chip"><i></i> MODO NAVEGADOR</span><span class="version">V5.0</span><a href="#ajuda" class="top-link">Como funciona</a></div>
+  </header>
+
+  <main class="wrap">
+    <section class="intro">
+      <div class="intro-content">
+        <span class="kicker"><span class="rule"></span> ÁUDIO & VÍDEO EM UM SÓ LUGAR</span>
+        <h1>Transforme sua mídia.<br><em>Sem instalar nada.</em></h1>
+        <p>Converta vídeos e áudios para MP3 ou MP4 diretamente no navegador. Sem enviar seus arquivos a um servidor, sem cadastro e pronto para GitHub Pages.</p>
+        <div class="summary-metrics"><div><strong>02</strong><span>FORMATOS</span></div><div><strong>100%</strong><span>NO NAVEGADOR</span></div><div><strong>0</strong><span>UPLOADS</span></div></div>
+      </div>
+      <div class="hero-visual" aria-hidden="true"><div class="orbit orbit-1"></div><div class="orbit orbit-2"></div><div class="center-badge"><svg viewBox="0 0 70 70" fill="none"><rect x="10" y="8" width="50" height="54" rx="10" stroke="currentColor" stroke-width="2"/><path d="M29 26v20l18-10-18-10Z" fill="currentColor"/></svg></div><div class="chip chip-a">.MP3 <span>ÁUDIO</span></div><div class="chip chip-b">.MP4 <span>VÍDEO</span></div><div class="visual-caption">PROCESSAMENTO LOCAL / PRIVADO</div></div>
+    </section>
+
+    <section class="workspace" aria-labelledby="workspaceTitle">
+      <div class="workspace-header"><div><span class="small-title">SUA ESTAÇÃO DE CONVERSÃO</span><h2 id="workspaceTitle">Novo arquivo</h2></div><div class="step-counter">01 <span>/ 03</span></div></div>
+      <div class="workspace-body">
+        <div class="mode-switch" role="tablist" aria-label="Origem da mídia"><button type="button" id="tabFile" class="mode-btn active" role="tab" aria-selected="true" aria-controls="filePanel"><svg viewBox="0 0 24 24" fill="none"><path d="M12 16V3m0 0L7 8m5-5 5 5M4 15v4a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg> Arquivo do dispositivo</button><button type="button" id="tabLink" class="mode-btn" role="tab" aria-selected="false" aria-controls="linkPanel"><svg viewBox="0 0 24 24" fill="none"><path d="m10 13 4-4m-6 8 0 0a5 5 0 0 1-3.5-8.5l3-3a5 5 0 0 1 7 0m2-2a5 5 0 0 1 3.5 8.5l-3 3a5 5 0 0 1-7 0" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg> Link direto</button></div>
+        <div id="filePanel" role="tabpanel" aria-labelledby="tabFile">
+          <div class="dropzone" id="dropzone" tabindex="0" role="button" aria-label="Selecionar arquivo para converter"><div class="drop-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 16V4m0 0L7 9m5-5 5 5M4 16v3a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-3" stroke-linejoin="round" stroke-linecap="round"/></svg></div><strong>Arraste seu vídeo ou áudio aqui</strong><p>Ou <span>clique para selecionar</span> um arquivo do seu dispositivo</p><small>MP4, MOV, WEBM, MKV, MP3, WAV, M4A e outros · até 250 MB</small></div>
+          <input type="file" id="fileInput" accept="video/*,audio/*,.mkv,.mov,.avi,.flv,.m4a,.opus,.ogg,.webm,.mp4,.mp3,.wav" hidden>
+        </div>
+        <div id="linkPanel" role="tabpanel" aria-labelledby="tabLink" hidden>
+          <div class="link-title"><label for="mediaUrl">URL DO ARQUIVO</label><span>HTTPS · LINK DIRETO</span></div>
+          <div class="url-field"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m10 13 4-4m-6 8a5 5 0 0 1 0-7l3-3a5 5 0 0 1 7 0m2-2a5 5 0 0 1 0 7l-3 3a5 5 0 0 1-7 0"/></svg><input id="mediaUrl" type="url" inputmode="url" placeholder="https://exemplo.com/video.mp4" autocomplete="url" spellcheck="false"><button type="button" id="pasteButton">Colar</button></div>
+          <button type="button" id="fetchButton" class="secondary-btn">Carregar mídia pelo link <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 5 7 7-7 7"/></svg></button>
+          <div class="context-note"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v6m0-9v.5" stroke-linecap="round"/></svg><span>Funciona com links diretos para arquivos que permitem acesso CORS. Links comuns de páginas do YouTube, TikTok, Instagram e similares <b>não podem ser extraídos pelo GitHub Pages sem backend</b>.</span></div>
+          <div class="link-info" id="linkInfo" hidden aria-live="polite"></div>
+        </div>
+
+        <div id="filePreview" class="file-preview" hidden aria-live="polite"><div class="preview-art"><video id="videoPreview" preload="metadata" muted playsinline controls hidden></video><audio id="audioPreview" preload="metadata" controls hidden></audio><div id="audioPlaceholder" class="audio-placeholder" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg></div></div><div class="file-details"><span class="preview-eyebrow">ARQUIVO CARREGADO</span><strong id="fileName" class="filename"></strong><div class="file-meta"><span id="fileSize"></span><span id="fileDuration">Duração: verificando...</span></div></div><button type="button" id="clearFile" title="Remover arquivo" aria-label="Remover arquivo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 6 18 18M18 6 6 18"/></svg></button></div>
+
+        <div class="divide-line"><span>02</span><strong>ESCOLHA O FORMATO</strong><span class="line"></span></div>
+        <div class="format-grid" role="radiogroup" aria-label="Formato de saída"><label class="format-option chosen" id="mp3Option"><input type="radio" name="format" value="mp3" checked><span class="format-mark audio-mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 17V5l11-2v13"/><circle cx="6" cy="17" r="3"/><circle cx="17" cy="16" r="3"/></svg></span><span class="format-text"><strong>MP3</strong><small>Extrair o áudio</small></span><span class="radio-ring"></span></label><label class="format-option" id="mp4Option"><input type="radio" name="format" value="mp4"><span class="format-mark video-mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2.5" y="4.5" width="19" height="15" rx="3"/><path d="m10 9 5 3-5 3V9Z"/></svg></span><span class="format-text"><strong>MP4</strong><small>Vídeo com som</small></span><span class="radio-ring"></span></label></div>
+        <div class="quality-area"><label for="qualitySelect">Qualidade de saída <small id="qualityHelp">Áudio MP3</small></label><div class="select-box"><select id="qualitySelect"><option value="192">192 kbps · Equilibrado</option><option value="128">128 kbps · Arquivo menor</option><option value="320">320 kbps · Alta qualidade</option></select><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg></div></div>
+        <div class="divide-line last"><span>03</span><strong>CONVERTA E SALVE</strong><span class="line"></span></div>
+        <button id="convertButton" type="button" class="primary-btn" disabled><span>Selecione um arquivo para converter</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v12m0 0 5-5m-5 5-5-5M4 17v3h16v-3" stroke-linejoin="round" stroke-linecap="round"/></svg></button>
+        <p class="footnote">A primeira conversão carrega o mecanismo FFmpeg WebAssembly (~30 MB). O desempenho depende do dispositivo. Arquivos não são enviados ao LinkMedia.</p>
+
+        <div id="statusPanel" class="status-panel" hidden aria-live="polite"><div class="status-top"><div><small>PROCESSAMENTO</small><strong id="stageTitle">Preparando...</strong></div><span id="progressPct">—</span></div><div class="progress-track"><div id="progressBar"></div><div class="progress-indeterminate" id="indeterminate" hidden></div></div><div class="status-bottom"><span id="statusDetail">Iniciando</span><button id="cancelButton" type="button">Cancelar</button></div></div>
+        <div id="resultPanel" class="result-panel" hidden><div class="result-mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m5 13 5 5L20 7"/></svg></div><div><strong>Seu arquivo está pronto</strong><span id="resultInfo"></span></div><a id="downloadButton" class="download-btn" download>Baixar agora</a></div>
+        <div id="alertPanel" class="alert-panel" hidden role="alert"></div>
+      </div>
+    </section>
+    <section class="explain" id="ajuda"><div class="explain-header"><span class="small-title">COMO FUNCIONA</span><h2>Feito para o navegador.<br><em>De verdade.</em></h2></div><div class="explain-grid"><article><span class="explain-num">01</span><h3>Escolha a mídia</h3><p>Selecione um arquivo do celular ou PC. Também é possível carregar links diretos de arquivos com CORS liberado.</p></article><article><span class="explain-num">02</span><h3>Converta localmente</h3><p>O FFmpeg WebAssembly é executado no seu navegador, sem backend, Node.js ou serviço de conversão.</p></article><article><span class="explain-num">03</span><h3>Baixe o resultado</h3><p>Receba seu MP3 ou MP4 e escolha onde salvar. O arquivo fica apenas na memória do dispositivo.</p></article></div></section>
+    <section class="truth-note"><div class="truth-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3 2 21h20L12 3Z"/><path d="M12 9v5m0 3v.5" stroke-linecap="round"/></svg></div><div><strong>Por que links do YouTube não funcionam diretamente?</strong><p>O GitHub Pages publica arquivos estáticos. O navegador não tem acesso aos fluxos privados das plataformas nem pode contornar CORS. Para baixar por URL de páginas de streaming, seria necessário conectar um backend autorizado. Esta versão não simula downloads que não pode realizar.</p></div></section>
+  </main>
+  <footer class="footer wrap"><span>LINKMEDIA STUDIO <span class="footer-sep">/</span> V5</span><span>Projeto independente · Use apenas mídia própria ou autorizada.</span></footer>
+  <script src="./app.js" defer></script>
+</body>
+</html>

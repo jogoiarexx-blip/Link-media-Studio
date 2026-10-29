@@ -1,61 +1,68 @@
-# LinkMedia Studio v3
+# LinkMedia Studio v5 — GitHub Pages, sem backend
 
-Site responsivo para **prévia automática** de vídeos, seleção de MP3/MP4 e acompanhamento dos dados reais de transferência. Destinado a mídias próprias ou expressamente autorizadas; não contorna paywalls ou DRM.
+Este projeto é um **site estático de verdade**: `index.html`, `styles.css`, `app.js`, `converter-worker.js`, `favicon.svg` e `.nojekyll`. Não precisa de servidor Node.js, Python, `yt-dlp`, build, Docker, chave de API ou banco de dados. Pode ser publicado diretamente em **GitHub Pages**.
 
-## O que mudou da v2
+## O que funciona
 
-- Prévia automática após colar URL: título, canal, miniatura e duração (`POST /api/preview`).
-- Qualidades de vídeo apresentadas conforme informação da mídia (quando disponível); áudio MP3 VBR / 192 / 128 kbps.
-- Progresso verdadeiro do download: porcentagem informada, velocidade, bytes, estimativa de tempo, etapas separadas de preparação/download/FFmpeg.
-- Não inventa porcentagem para recodificação FFmpeg (etapa indicada como em processamento).
-- Download streaming sem guardar o arquivo inteiro na memória do cliente; link reutilizável por alguns minutos.
-- Interface revisada para desktop e celular, teclado, mensagens de erro, cancelamento.
-- URLs normalizadas com id de vídeo; impede playlists, hosts malformados e outros endereços; rate limiting básico e limite de paralelismo.
-- Nova imagem visual, favicon, API de status, configuração para frontend estático e configuração Render.
+- Escolher/arrastar arquivo de vídeo ou áudio local; mostra nome, tamanho e, quando o navegador conseguir, prévia com duração.
+- Converter **arquivos** para **MP3 (128/192/320 kbps)** e **vídeos** para **MP4 (três perfis)** no navegador, usando **FFmpeg WebAssembly (single-thread)**.
+- Acompanhar carregamento do conversor e progresso *estimado* reportado pelo FFmpeg (a API de progresso é experimental e nem todos os arquivos fornecem porcentagem confiável).
+- Cancelar uma conversão (encerra o Worker) e baixar o resultado.
+- Informar URL HTTPS **direta do arquivo**. O navegador tenta baixá-lo usando `fetch` + CORS; mostra bytes e velocidade quando o servidor permite a leitura, depois permite converter.
+- Layout responsivo para celular e computador, sem cadastro e sem upload de arquivos para servidor do LinkMedia.
 
-## Iniciar em um servidor Linux ou Windows
+## O que não funciona sem backend
 
-Requer **Node 20+**, **Python 3**, **ffmpeg** e **yt-dlp Python** instalados e disponíveis ao usuário que executa o servidor.
+**Links de páginas comuns do YouTube, TikTok, Instagram, Facebook e similares NÃO podem ser extraídos só com GitHub Pages.** São páginas web, não URLs diretas de mídia, e há restrições de CORS/streaming. O botão de link **não finge** que consegue baixá-las; explica o limite ao usuário.
 
-```sh
-python3 -m pip install -U 'yt-dlp[default]'
-node server/server.js
+Também não funciona com links diretos que bloqueiam CORS, URLs que pedem cookies/login, conteúdos privados, DRM, ou formatos que o FFmpeg compilado não tenha decodificadores para processar. Não usa proxies públicos, extensões suspeitas ou contorna proteções.
+
+Se a prioridade absoluta for "colar link do YouTube → obter MP3/MP4", o **frontend pode continuar hospedado no GitHub Pages**, mas o download da plataforma precisa de um **backend externo autorizado**. Não existe solução universal, confiável e apenas estática que forneça esse fluxo em todos os sites.
+
+## Publicar no GitHub Pages (sem instalar nada)
+
+1. Crie um repositório público no GitHub ou abra um repositório existente.
+2. Extraia o ZIP e envie **todos os arquivos da pasta** para a **raiz do repositório** (o `index.html` precisa ficar na raiz). Você pode usar **Add file → Upload files**.
+3. Abra **Settings → Pages**.
+4. Em **Build and deployment → Source**, selecione **Deploy from a branch**.
+5. Selecione **main** e **/(root)**, depois **Save**.
+6. Acesse `https://SEU-USUARIO.github.io/NOME-DO-REPOSITORIO/` após o GitHub publicar a página.
+
+Não use os arquivos da versão v4 com `server/server.js`; esta versão v5 os substitui integralmente para o modo estático.
+
+## Requisitos técnicos
+
+- Navegador moderno (Chrome/Edge/Firefox recentes), WebAssembly, Web Workers, memória disponível e HTTPS.
+- **Na primeira conversão**, o navegador baixa automaticamente os recursos do `@ffmpeg/core@0.12.10` pelo CDN jsDelivr. O arquivo `.wasm` tem dezenas de MB e **precisa de conexão com a internet**. Esta é uma dependência estática, **não um servidor de conversão**.
+- Arquivos até 250 MB nesta versão. A conversão usa RAM proporcional ao arquivo e pode falhar antes desse limite em celulares ou aparelhos com pouco armazenamento/memória.
+- No GitHub Pages não é possível configurar headers COOP/COEP livremente; portanto foi escolhido o core **single-thread**, que **não precisa de SharedArrayBuffer**.
+- MP3 320 kbps é taxa de saída e **não melhora** o áudio da origem.
+
+## Segurança e privacidade
+
+O arquivo selecionado é processado **localmente no navegador**. O mecanismo de conversão é carregado de `cdn.jsdelivr.net` na primeira execução. URLs inseridas pelo usuário são acessadas diretamente pelo navegador ao endereço informado, sem passarem por proxy do LinkMedia. Nenhum dado é enviado a backend deste projeto. O arquivo convertido é disponibilizado como `blob:` e destruído ao fechar a página.
+
+Use apenas arquivos próprios ou que tenha direito de baixar e converter. Projeto independente, sem associação com plataformas de streaming.
+
+## Diagnóstico
+
+- **A conversão não iniciou:** confira internet/CDN, desative temporariamente bloqueio de scripts na página e tente arquivo menor.
+- **O link não carregou:** o servidor provavelmente bloqueou CORS ou devolveu HTML; use um arquivo local.
+- **MP4 ficou lento:** a codificação H.264 em WebAssembly consome muito processamento; escolha "Rápido" ou um arquivo menor.
+- **Prévia não aparece:** o navegador pode não reproduzir MKV/codec da origem; tente converter mesmo assim.
+
+## Desenvolvimento/testes
+
+Os arquivos são estáticos. Para pré-visualizar localmente, é recomendado usar `python -m http.server 8080` dentro da pasta; então acesse `http://localhost:8080`. Não abra com `file://`, pois Workers podem ser bloqueados.
+
+Testes básicos com Node (somente para desenvolvimento, não para publicar):
+
+```bash
+node --test tests/*.test.mjs
 ```
 
-Abre `http://localhost:3000`. No Windows, se o comando for `python` e não `python3`, configure `PYTHON=python` no ambiente.
+Os testes automatizados exercitam validação estática e Worker com FFmpeg simulado. **Não** confirmam conversão real no navegador; testes reais exigem acesso ao WASM externo e arquivos de mídia autorizados.
 
-## Docker (recomendado)
+## Tecnologias e licenças
 
-```sh
-docker build -t linkmedia-v3 .
-docker run --rm -p 3000:3000 --name linkmedia linkmedia-v3
-```
-
-Todos os componentes necessários à conversão são instalados no container.
-
-## Publicação
-
-**Opção mais simples: Render / Railway / VPS:** crie um serviço conectado ao repositório, escolha **Docker**, publique a porta `PORT` exposta pelo serviço. O mesmo servidor entrega o site e a API. Inclui `render.yaml`; ajuste o plano e o domínio. Hospedagem gratuita com pouca memória/CPU pode não suportar conversões longas.
-
-**Se publicar o frontend no GitHub Pages:** envie **somente** o conteúdo da pasta `public/` para o Pages; publique o backend Docker em outro serviço. Em *Configuração avançada* informe a URL HTTPS da API. Configure a variável `ALLOWED_ORIGIN=https://SEU-USUARIO.github.io` no backend. O Pages sozinho **não** consegue executar o ffmpeg/yt-dlp.
-
-Variáveis: `PORT=3000`, `PYTHON=python3`, `MAX_ACTIVE=2`, `ALLOWED_ORIGIN=https://site.exemplo` (aceita lista de origens separadas por vírgula), `TRUST_PROXY=1` somente quando atrás de proxy confiável que controla o cabeçalho X-Forwarded-For. `LINKMEDIA_WORKER` é apenas para testes/integradores confiáveis. **Não** há suporte a autenticação: antes de publicar para grande volume, coloque proteção de acesso, WAF/rate limiting de borda e monitoramento de disco.
-
-## APIs
-
-- `POST /api/preview` → `{url}` → `{title, creator, duration, thumbnail, qualities, url}`.
-- `POST /api/jobs` → `{url,format:'mp3'|'mp4',quality:'best'|'192'|'128'|...}` → status e UUID.
-- `GET /api/jobs/:id` → `{state,stage,percent,received,total,speed,eta,filename,...}`.
-- `DELETE /api/jobs/:id` → cancelar tarefa.
-- `GET /api/jobs/:id/download` → arquivo como streaming temporário.
-- `GET /api/health` → versão/capacidade.
-
-Duração máxima: 90 minutos; tamanho de mídia limitado a 800MB; jobs expiram após 10 min e prévias ficam em cache por 5 min. A porcentagem informada diz respeito **à transferência**, não à recodificação. Os arquivos são temporários no backend, não em contas de armazenamento do usuário.
-
-## Testar
-
-```sh
-npm test
-```
-
-Os testes automatizados usam um **worker simulado**: validam HTTP, prévia, validação de URLs, estados de processamento e download, mas **não** demonstram que o YouTube real funcionará na hospedagem. Acessibilidade e navegação visual precisam de teste em navegador. O funcionamento da extração depende de mudanças no site de origem e de suas regras. MP3 192/128 kbps descrevem taxa de *saída*, não melhoram o áudio de origem.
+Interface: HTML/CSS/JavaScript. Mecanismo: FFmpeg WebAssembly, `@ffmpeg/core@0.12.10` (componente LGPL/GPL conforme a distribuição, bibliotecas vinculadas e opções). Consulte as licenças e avisos no projeto original: https://github.com/ffmpegwasm/ffmpeg.wasm e https://ffmpeg.org/legal.html. Não redistribuímos binários do núcleo FFmpeg neste ZIP; são carregados sob demanda do CDN.
